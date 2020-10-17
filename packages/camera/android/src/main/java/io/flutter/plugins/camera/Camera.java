@@ -16,6 +16,8 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureFailure;
 import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.params.OutputConfiguration;
+import android.hardware.camera2.params.SessionConfiguration;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.CamcorderProfile;
 import android.media.Image;
@@ -39,6 +41,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 public class Camera {
   private final SurfaceTextureEntry flutterTexture;
@@ -330,6 +333,26 @@ public class Camera {
     surfaceList.add(flutterSurface);
     surfaceList.addAll(remainingSurfaces);
     // Start the session
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+      List<OutputConfiguration> outConfigurations = new ArrayList<>();
+      for (Surface surface : surfaceList) {
+        outConfigurations.add(new OutputConfiguration(surface));
+      }
+      SessionConfiguration sessionConfig = new SessionConfiguration(
+              SessionConfiguration.SESSION_REGULAR, outConfigurations,
+              command -> {
+
+              }, callback);
+      sessionConfig.setSessionParameters(captureRequestBuilder.build());
+      cameraDevice.createCaptureSession(sessionConfig);
+    } else {
+      createCaptureSession(surfaceList, callback);
+    }
+  }
+
+  @SuppressWarnings("deprecation")
+  private void createCaptureSession(List<Surface> surfaceList,CameraCaptureSession.StateCallback callback)
+     throws CameraAccessException {
     cameraDevice.createCaptureSession(surfaceList, callback, null);
   }
 

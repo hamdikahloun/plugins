@@ -1,3 +1,18 @@
+## 6.0.0
+
+* Migrate to null safety.
+* Fix outdated links across a number of markdown files ([#3276](https://github.com/flutter/plugins/pull/3276))
+* Update the example app: remove the deprecated `RaisedButton` and `FlatButton` widgets.
+* Correct statement in description about which platforms url_launcher supports.
+
+## 5.7.13
+
+* Update Flutter SDK constraint.
+
+## 5.7.12
+
+* Updated code sample in `README.md`
+
 ## 5.7.11
 
 * Update integration test examples to use `testWidgets` instead of `test`.

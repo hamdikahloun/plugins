@@ -1,3 +1,11 @@
+## 2.0.0
+
+* Migrate to null safety.
+
+## 0.1.1+3
+
+* Update Flutter SDK constraint.
+
 ## 0.1.1+2
 
 * Log errors in the example when calls to the `path_provider` fail.
